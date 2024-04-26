@@ -48,6 +48,41 @@ async function run() {
             res.send(result)
         })
 
+        app.get('/updatecraft/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await craftCollection.findOne(query)
+            res.send(result)
+        })
+
+        app.put('/updatecraft/:id', async (req, res) => {
+            const id = req.params.id
+            const craft = req.body
+            const filter = { _id: new ObjectId(id) };
+            const updateCraft = {
+                $set: {
+                    itemName: craft.itemName,
+                    subcategoryName: craft.subcategoryName,
+                    description: craft.description,
+                    time: craft.time,
+                    customization: craft.customization,
+                    stockStatus: craft.stockStatus,
+                    rating: craft.rating,
+                    price: craft.price,
+                    photo: craft.photo
+                },
+            };
+            const result = await craftCollection.updateOne(filter, updateCraft);
+            res.send(result)
+        })
+
+        app.delete('/addcraft/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await craftCollection.deleteOne(query);
+            res.send(result)
+        })
+
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
