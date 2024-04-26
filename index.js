@@ -9,7 +9,7 @@ app.use(express.json())
 
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://Assignment_10:GCGyK5UlXtPzZ9El@cluster0.bls3tyg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -32,6 +32,19 @@ async function run() {
         app.post('/addcraft', async (req, res) => {
             const craft = req.body
             const result = await craftCollection.insertOne(craft);
+            res.send(result)
+        })
+
+        app.get('/addcraft', async (req, res) => {
+            const cursor = craftCollection.find();
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+        app.get('/addcraft/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await craftCollection.findOne(query)
             res.send(result)
         })
 
