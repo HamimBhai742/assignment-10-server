@@ -6,7 +6,7 @@ const port = process.env.PORT || 5000
 
 
 app.use(cors({
-    origin:["http://localhost:5173"]
+    origin: ["http://localhost:5173"]
 }))
 app.use(express.json())
 
@@ -91,6 +91,17 @@ async function run() {
             res.send(result)
         })
 
+        // subcatagory
+
+        app.get('/craftarts/:name', async (req, res) => {
+            const subcategoryName = req.params.name
+            // console.log(subcategoryName);
+            const qurey = { subcategoryName: subcategoryName  }
+            const cursor = craftCollection.find(qurey);
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
         // users api
 
         app.post('/users', async (req, res) => {
@@ -112,7 +123,9 @@ async function run() {
             const result = await userCollection.findOne(query)
             res.send(result)
         })
-       
+
+
+
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
