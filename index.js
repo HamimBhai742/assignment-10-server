@@ -5,7 +5,9 @@ const app = express()
 const port = process.env.PORT || 5000
 
 
-app.use(cors())
+app.use(cors({
+    origin:["http://localhost:5173"]
+}))
 app.use(express.json())
 
 
@@ -13,7 +15,7 @@ app.use(express.json())
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.CRAFT_USER}:${process.env.CRAFT_PASS}@cluster0.bls3tyg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
-console.log(uri);
+// console.log(uri);
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
